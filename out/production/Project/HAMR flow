@@ -1,0 +1,135 @@
+''' this is pseudo code to show VERY BASIC HAMR algorithms
+The idea is to fine-tune maximum capacity for different recording head dimensions
+The code is NOT the actual code used in production, nor it is executable 
+The basic methodologies are publicly available in many papers in the read-me file
+'''
+
+#imports
+import StaticTests
+import PositionControl as PC
+import SpindleControl as SC
+import logging
+
+
+
+class Head:
+	def __init__(head_ID, **kwargs):
+		self.head_id = head_ID
+		self.head_type = **kwargs.get('head_type', None)
+		self.head_status = **kwargs.get('head_status', None)
+		self.head_ABS_type = **kwargs.get('head_ABS_type', None)
+		self.head_suspension_type = **kwargs.get('head_suspension_type', None)
+		logging.basicConfig(os.path.join(basepath, 'logger.txt'), level = DEBUG)
+		logger = logging.getlogger()
+	def set_status(status):
+		if status == 'Fresh' or status == 'Tested' or status == 'Degraded':
+			self.head_status = status
+			logger.info('head {} + status changed to {}'.format(self.head_id, self.head_status))
+		else:
+			logger.warning('head status can only be Fresh, Tested, or Degraded; the status change request has failed')
+
+class Tester:
+	def __init__(tester_ID, **kwargs):
+		self.tester_id = tester_ID
+		self.suspension_type = **kwargs.get('suspension_type', None)
+		self.max_RPM = **kwargs.get('max_RPM', None)
+	
+	def set_RPM(RPM):
+		if RPM > self.max_RPM:
+			logging.warning('exceeds max ')
+
+
+
+class Testflow:
+#Load heads in tray sequentially
+	def main():
+		tray_headcount = float(inf);
+		logging.basicConfig(filename='testLogFile.log', filemode='w', level=logging.DEBUG)
+		logging.info('Test Started')
+		tray_head_list = input('get tray head list')
+		if int(tray_head_list) > 0:
+			test_all_heads(tray_head_list)
+		logging.info('Test Finished')
+
+	def test_all_heads(tray_head_list):
+		tray_headcount = len(tray_head_list)
+		next_head_to_load = tray_head_list[0]
+		int i = 0
+		while tray_headcount > 0:
+			if test_head(next_head_to_load[i]):
+				tray_headcount -= 1
+				i += 1
+			else:
+				break
+		exit()
+
+	def test_head(head):
+		if not head:
+			logger.warning('empty tray')
+			return False
+			hut = head
+		if hut.status == 'Degraded':
+			prompt_times = 0
+			while prompt_times < 2:
+				logging.warning('head is degraded; continue testing? Y/N')
+				input = input()
+				if input == 'Y':
+					break
+				elif input == 'N':
+					self.abort_test('head degrade')
+				else:
+					prompt_times += 1
+		load_flag = self.load()
+		time.sleep(0.4)
+		if not load_flag:
+			logging.warning('head load fail')
+		read_heater_res = PC.measure_read_heater_resistance()
+		write_heater_res = PC.measure_write_heater_resistance()
+		writer_res = PC.measure_writer_resistance()
+		reader_res = PC.measure_reader_resistance()
+		if 0 < read_heater_res < 100:
+			logger.info('reader_heater_res: {}'.format(reader_heater_res))
+		else:
+			self.abort_test('reader resistance out of range')
+		'''
+		if.... check all resistance ranges
+		'''
+		quick_laser_power = Test.quick_laser_scan()[0]
+		read_fly_power = Test.findreadDFHpower(10)[0]
+		write_fly_power = Test.findwriteDFHpower(10)[0]
+		laser_tuning_power = Test.full_laser_scan()[0]
+		SNR = Test.UnSqzSNR()
+		BER = Test.UnSqzBER()
+		max_data_rate = Test.maxdatarate()
+		SqzSnR = Test.SqzSNR()
+		SqzBER = Test.SqzBER()
+		# Write Track Width and Read Width
+		WTW, RTW = Test.Track_Scan()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

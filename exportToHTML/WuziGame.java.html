@@ -1,0 +1,320 @@
+<html>
+<head>
+<title>WuziGame.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: #606366; font-weight: normal; font-style: normal; }
+.s0 { color: rgb(169,183,198); }
+.s1 { color: rgb(204,120,50); }
+.s2 { color: rgb(128,128,128); }
+.s3 { color: rgb(106,135,89); }
+.s4 { color: rgb(104,151,187); }
+</style>
+</head>
+<BODY BGCOLOR="#2b2b2b">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+WuziGame.java</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<span class="s0"> 
+</span><span class="s1">import </span><span class="s0">javax.imageio.ImageIO</span><span class="s1">;</span><span class="s0"> 
+</span><span class="s1">import </span><span class="s0">javax.swing.*</span><span class="s1">;</span><span class="s0"> 
+</span><span class="s1">import </span><span class="s0">java.awt.*</span><span class="s1">;</span><span class="s0"> 
+</span><span class="s1">import </span><span class="s0">java.awt.event.ActionEvent</span><span class="s1">;</span><span class="s0"> 
+</span><span class="s1">import </span><span class="s0">java.awt.event.ActionListener</span><span class="s1">;</span><span class="s0"> 
+</span><span class="s2">//import java.awt.geom.Line2D;</span><span class="s0"> 
+</span><span class="s1">import </span><span class="s0">java.awt.image.BufferedImage</span><span class="s1">;</span><span class="s0"> 
+</span><span class="s1">import </span><span class="s0">java.io.File</span><span class="s1">;</span><span class="s0"> 
+</span><span class="s1">import </span><span class="s0">java.util.PriorityQueue</span><span class="s1">;</span><span class="s0"> 
+</span><span class="s2">//import java.awt.*;</span><span class="s0"> 
+ 
+</span><span class="s1">public class </span><span class="s0">WuziGame </span><span class="s1">extends </span><span class="s0">JFrame{ 
+    Wuzi wuzi</span><span class="s1">;</span><span class="s0"> 
+    </span><span class="s1">boolean </span><span class="s0">gamefinish</span><span class="s1">;</span><span class="s0"> 
+    </span><span class="s1">public </span><span class="s0">WuziGame(</span><span class="s1">int </span><span class="s0">size) { 
+        </span><span class="s2">//getContentPane().add(new DrawRect());</span><span class="s0"> 
+        </span><span class="s1">this</span><span class="s0">.gamefinish = </span><span class="s1">false;</span><span class="s0"> 
+ 
+        JButton b = </span><span class="s1">new </span><span class="s0">JButton(</span><span class="s3">&quot;Reset&quot;</span><span class="s0">)</span><span class="s1">;</span><span class="s0"> 
+        </span><span class="s2">//JButton a = new JButton(&quot;Start&quot;);</span><span class="s0"> 
+        </span><span class="s2">//this.add(a);</span><span class="s0"> 
+        </span><span class="s1">this</span><span class="s0">.add(b)</span><span class="s1">;</span><span class="s0"> 
+        </span><span class="s2">//a.setBounds(100,50 + size * 50,300,100);</span><span class="s0"> 
+        b.setBounds(size * </span><span class="s4">25</span><span class="s1">,</span><span class="s4">50 </span><span class="s0">+ size * </span><span class="s4">50</span><span class="s1">,</span><span class="s4">300</span><span class="s1">,</span><span class="s4">100</span><span class="s0">)</span><span class="s1">;</span><span class="s0"> 
+        JTextField status = </span><span class="s1">new </span><span class="s0">JTextField()</span><span class="s1">;</span><span class="s0"> 
+        add(status)</span><span class="s1">;</span><span class="s0"> 
+        status.setBounds(size * </span><span class="s4">25</span><span class="s1">,</span><span class="s4">10</span><span class="s1">,</span><span class="s4">200</span><span class="s1">,</span><span class="s4">30</span><span class="s0">)</span><span class="s1">;</span><span class="s0"> 
+        status.setBackground(Color.white)</span><span class="s1">;</span><span class="s0"> 
+        wuzi = </span><span class="s1">new </span><span class="s0">Wuzi(status</span><span class="s1">, </span><span class="s0">size</span><span class="s1">, false</span><span class="s0">)</span><span class="s1">;</span><span class="s0"> 
+        </span><span class="s1">for</span><span class="s0">(</span><span class="s1">int </span><span class="s0">i = </span><span class="s4">0</span><span class="s1">; </span><span class="s0">i &lt; size</span><span class="s1">; </span><span class="s0">i++) { 
+            </span><span class="s1">for</span><span class="s0">(</span><span class="s1">int </span><span class="s0">j = </span><span class="s4">0</span><span class="s1">; </span><span class="s0">j &lt;size</span><span class="s1">; </span><span class="s0">j++) { 
+                add(wuzi.board[i][j])</span><span class="s1">;</span><span class="s0"> 
+            } 
+        } 
+</span><span class="s2">//        a.addActionListener(new ActionListener() {</span><span class="s0"> 
+</span><span class="s2">//            @Override</span><span class="s0"> 
+</span><span class="s2">//            public void actionPerformed(ActionEvent e) {</span><span class="s0"> 
+</span><span class="s2">//                status.setText(&quot;Game START&quot;);</span><span class="s0"> 
+</span><span class="s2">//            }</span><span class="s0"> 
+</span><span class="s2">//        });</span><span class="s0"> 
+        b.addActionListener(</span><span class="s1">new </span><span class="s0">ActionListener() { 
+            @Override 
+            </span><span class="s1">public void </span><span class="s0">actionPerformed(ActionEvent e) { 
+                status.setText(</span><span class="s3">&quot;Game START!!!!&quot;</span><span class="s0">)</span><span class="s1">;</span><span class="s0"> 
+                status.setBackground(Color.white)</span><span class="s1">;</span><span class="s0"> 
+                gamefinish = </span><span class="s1">false;</span><span class="s0"> 
+                wuzi.clearBoard()</span><span class="s1">;</span><span class="s0"> 
+            } 
+        })</span><span class="s1">;</span><span class="s0"> 
+ 
+        setSize(size * </span><span class="s4">50 </span><span class="s0">+ </span><span class="s4">400</span><span class="s1">,</span><span class="s0">size * </span><span class="s4">50 </span><span class="s0">+ </span><span class="s4">400</span><span class="s0">)</span><span class="s1">;</span><span class="s0"> 
+        setDefaultCloseOperation(</span><span class="s4">3</span><span class="s0">)</span><span class="s1">;</span><span class="s0"> 
+        setTitle(</span><span class="s3">&quot;无敌五子棋&quot;</span><span class="s0">)</span><span class="s1">;</span><span class="s0"> 
+        JScrollBar scrollBar=</span><span class="s1">new </span><span class="s0">JScrollBar(JScrollBar.VERTICAL</span><span class="s1">, </span><span class="s4">30</span><span class="s1">,</span><span class="s4">40</span><span class="s1">, </span><span class="s4">0</span><span class="s1">, </span><span class="s4">500</span><span class="s0">)</span><span class="s1">;</span><span class="s0"> 
+        </span><span class="s1">this</span><span class="s0">.getContentPane().add(scrollBar</span><span class="s1">, </span><span class="s0">BorderLayout.EAST)</span><span class="s1">;</span><span class="s0"> 
+        setLayout(</span><span class="s1">null</span><span class="s0">)</span><span class="s1">;</span><span class="s0"> 
+        setVisible(</span><span class="s1">true</span><span class="s0">)</span><span class="s1">;</span><span class="s0"> 
+    } 
+ 
+    </span><span class="s1">public static void </span><span class="s0">main(String[] args) { 
+        WuziGame w = </span><span class="s1">new </span><span class="s0">WuziGame(</span><span class="s4">13</span><span class="s0">)</span><span class="s1">;</span><span class="s0"> 
+ 
+    } 
+} 
+ 
+</span><span class="s1">class </span><span class="s0">Wuzi </span><span class="s1">extends </span><span class="s0">JPanel{ 
+    </span><span class="s1">boolean </span><span class="s0">gamefinish</span><span class="s1">;</span><span class="s0"> 
+    </span><span class="s1">int </span><span class="s0">size</span><span class="s1">;</span><span class="s0"> 
+    JButton[][] board</span><span class="s1">;</span><span class="s0"> 
+    </span><span class="s1">int</span><span class="s0">[][] matrix</span><span class="s1">;</span><span class="s0"> 
+    ImageIcon whiteDot</span><span class="s1">, </span><span class="s0">blackDot</span><span class="s1">, </span><span class="s0">empty</span><span class="s1">, </span><span class="s0">yellowDot</span><span class="s1">;</span><span class="s0"> 
+    BufferedImage pic1</span><span class="s1">, </span><span class="s0">pic2</span><span class="s1">, </span><span class="s0">pic3</span><span class="s1">, </span><span class="s0">yellowDotImage</span><span class="s1">;</span><span class="s0"> 
+    JTextField status</span><span class="s1">;</span><span class="s0"> 
+ 
+    Wuzi(JTextField status</span><span class="s1">, int </span><span class="s0">size</span><span class="s1">, boolean </span><span class="s0">gamefinish) { 
+        </span><span class="s1">this</span><span class="s0">.gamefinish = </span><span class="s1">false;</span><span class="s0"> 
+        </span><span class="s1">this</span><span class="s0">.size = size</span><span class="s1">;</span><span class="s0"> 
+        </span><span class="s1">this</span><span class="s0">.status = status</span><span class="s1">;</span><span class="s0"> 
+        </span><span class="s1">try </span><span class="s0">{ 
+            pic1 = ImageIO.read(</span><span class="s1">new </span><span class="s0">File(Wuzi.</span><span class="s1">class</span><span class="s0">.getResource(</span><span class="s3">&quot;blackDot.png&quot;</span><span class="s0">).getFile()))</span><span class="s1">;</span><span class="s0"> 
+            pic2 = ImageIO.read(</span><span class="s1">new </span><span class="s0">File(Wuzi.</span><span class="s1">class</span><span class="s0">.getResource(</span><span class="s3">&quot;whiteDot.jpg&quot;</span><span class="s0">).getFile()))</span><span class="s1">;</span><span class="s0"> 
+            pic3 = ImageIO.read(</span><span class="s1">new </span><span class="s0">File(Wuzi.</span><span class="s1">class</span><span class="s0">.getResource(</span><span class="s3">&quot;empty.jpg&quot;</span><span class="s0">).getFile()))</span><span class="s1">;</span><span class="s0"> 
+            yellowDotImage = ImageIO.read(</span><span class="s1">new </span><span class="s0">File(Wuzi.</span><span class="s1">class</span><span class="s0">.getResource(</span><span class="s3">&quot;yellowDot.jpg&quot;</span><span class="s0">).getFile()))</span><span class="s1">;</span><span class="s0"> 
+        } </span><span class="s1">catch</span><span class="s0">(Exception ex) { 
+            System.out.println(</span><span class="s3">&quot;cannot get image&quot;</span><span class="s0">)</span><span class="s1">;</span><span class="s0"> 
+        } 
+        board = </span><span class="s1">new </span><span class="s0">JButton[size][size]</span><span class="s1">;</span><span class="s0"> 
+        matrix = </span><span class="s1">new int</span><span class="s0">[size][size]</span><span class="s1">;</span><span class="s0"> 
+        empty = </span><span class="s1">new </span><span class="s0">ImageIcon(pic3)</span><span class="s1">;</span><span class="s0"> 
+        whiteDot = </span><span class="s1">new </span><span class="s0">ImageIcon(pic2)</span><span class="s1">;</span><span class="s0"> 
+        blackDot = </span><span class="s1">new </span><span class="s0">ImageIcon(pic1)</span><span class="s1">;</span><span class="s0"> 
+        yellowDot = </span><span class="s1">new </span><span class="s0">ImageIcon(yellowDotImage)</span><span class="s1">;</span><span class="s0"> 
+        </span><span class="s1">for</span><span class="s0">(</span><span class="s1">int </span><span class="s0">i = </span><span class="s4">0</span><span class="s1">; </span><span class="s0">i &lt; size</span><span class="s1">; </span><span class="s0">i++) { 
+            </span><span class="s1">for</span><span class="s0">(</span><span class="s1">int </span><span class="s0">j = </span><span class="s4">0</span><span class="s1">; </span><span class="s0">j &lt; size</span><span class="s1">; </span><span class="s0">j++) { 
+                JButton jb = </span><span class="s1">new </span><span class="s0">JButton(empty)</span><span class="s1">;</span><span class="s0"> 
+                board[i][j] = jb</span><span class="s1">;</span><span class="s0"> 
+                jb.setBounds(</span><span class="s4">100 </span><span class="s0">+ i * </span><span class="s4">50</span><span class="s1">, </span><span class="s4">50 </span><span class="s0">+ j * </span><span class="s4">50</span><span class="s1">, </span><span class="s4">49</span><span class="s1">,</span><span class="s4">49</span><span class="s0">)</span><span class="s1">;</span><span class="s0"> 
+                jb.addActionListener(</span><span class="s1">new </span><span class="s0">ActionListener() { 
+                    @Override 
+                    </span><span class="s1">public void </span><span class="s0">actionPerformed(ActionEvent e) { 
+                        </span><span class="s1">if</span><span class="s0">(!gamefinish &amp;&amp; jb.getIcon() == empty) { 
+                            jb.setIcon(whiteDot)</span><span class="s1">;</span><span class="s0"> 
+                            updateBoard()</span><span class="s1">;</span><span class="s0"> 
+                            </span><span class="s1">if </span><span class="s0">(checkWhoWin(matrix) == </span><span class="s4">0</span><span class="s0">) { 
+                                fillNextMove(matrix</span><span class="s1">, </span><span class="s0">board)</span><span class="s1">;</span><span class="s0"> 
+                                updateBoard()</span><span class="s1">;</span><span class="s0"> 
+                                checkWhoWin(matrix)</span><span class="s1">;</span><span class="s0"> 
+                            } 
+                        } 
+                    } 
+                })</span><span class="s1">;</span><span class="s0"> 
+            } 
+        } 
+    } 
+ 
+    </span><span class="s1">void </span><span class="s0">clearBoard() { 
+        </span><span class="s1">for</span><span class="s0">(</span><span class="s1">int </span><span class="s0">i = </span><span class="s4">0</span><span class="s1">; </span><span class="s0">i &lt; size </span><span class="s1">;</span><span class="s0">i++) { 
+            </span><span class="s1">for</span><span class="s0">(</span><span class="s1">int </span><span class="s0">j = </span><span class="s4">0</span><span class="s1">; </span><span class="s0">j &lt; size</span><span class="s1">; </span><span class="s0">j++) { 
+                board[i][j].setIcon(empty)</span><span class="s1">;</span><span class="s0"> 
+                matrix[i][j] = </span><span class="s4">0</span><span class="s1">;</span><span class="s0"> 
+            } 
+        } 
+    } 
+    </span><span class="s1">void </span><span class="s0">updateBoard() { 
+        </span><span class="s2">//update matrix table and check for win</span><span class="s0"> 
+        </span><span class="s1">for</span><span class="s0">(</span><span class="s1">int </span><span class="s0">i = </span><span class="s4">0</span><span class="s1">; </span><span class="s0">i &lt; size</span><span class="s1">; </span><span class="s0">i++) { 
+            </span><span class="s1">for</span><span class="s0">(</span><span class="s1">int </span><span class="s0">j = </span><span class="s4">0</span><span class="s1">; </span><span class="s0">j &lt; size</span><span class="s1">; </span><span class="s0">j++) { 
+                </span><span class="s1">if</span><span class="s0">(board[i][j].getIcon() == whiteDot) { 
+                    matrix[i][j] = </span><span class="s4">1</span><span class="s1">;</span><span class="s0"> 
+                    </span><span class="s2">//System.out.println(&quot;find one white dot&quot;);</span><span class="s0"> 
+                } 
+                </span><span class="s1">else if</span><span class="s0">(board[i][j].getIcon() == blackDot) { 
+                    matrix[i][j] = -</span><span class="s4">1</span><span class="s1">;</span><span class="s0"> 
+                    </span><span class="s2">//System.out.println(&quot;find one black dot&quot;);</span><span class="s0"> 
+                } 
+            } 
+        } 
+ 
+    } 
+ 
+    </span><span class="s1">int </span><span class="s0">checkWhoWin(</span><span class="s1">int</span><span class="s0">[][] matrix) { 
+        </span><span class="s1">for</span><span class="s0">(</span><span class="s1">int </span><span class="s0">i = </span><span class="s4">0</span><span class="s1">; </span><span class="s0">i &lt; size</span><span class="s1">; </span><span class="s0">i++) { 
+            </span><span class="s1">for</span><span class="s0">(</span><span class="s1">int </span><span class="s0">j = </span><span class="s4">0</span><span class="s1">; </span><span class="s0">j &lt; size</span><span class="s1">; </span><span class="s0">j++) { 
+                </span><span class="s1">int </span><span class="s0">temp = matrix[i][j]</span><span class="s1">;</span><span class="s0"> 
+                </span><span class="s1">if</span><span class="s0">(temp == </span><span class="s4">0</span><span class="s0">) </span><span class="s1">continue;</span><span class="s0"> 
+                </span><span class="s1">if</span><span class="s0">(temp == </span><span class="s4">1</span><span class="s0">) { 
+                    </span><span class="s1">if</span><span class="s0">(reachFive(matrix</span><span class="s1">, </span><span class="s0">i</span><span class="s1">, </span><span class="s0">j)) { 
+                        status.setText(</span><span class="s3">&quot;哇塞！！！你真的可以的！甘拜下风！&quot;</span><span class="s0">)</span><span class="s1">;</span><span class="s0"> 
+                        status.setBackground(Color.RED)</span><span class="s1">;</span><span class="s0"> 
+                        gamefinish = </span><span class="s1">true;</span><span class="s0"> 
+                        </span><span class="s1">return </span><span class="s4">1</span><span class="s1">;</span><span class="s0"> 
+                    } 
+                } 
+                </span><span class="s1">else </span><span class="s0">{ 
+                    </span><span class="s1">if</span><span class="s0">(reachFive(matrix</span><span class="s1">, </span><span class="s0">i</span><span class="s1">, </span><span class="s0">j)) { 
+                        status.setText(</span><span class="s3">&quot;哈哈哈哈你还是要再练习&quot;</span><span class="s0">)</span><span class="s1">;</span><span class="s0"> 
+                        status.setBackground(Color.CYAN)</span><span class="s1">;</span><span class="s0"> 
+                        gamefinish = </span><span class="s1">true;</span><span class="s0"> 
+                        </span><span class="s1">return </span><span class="s0">-</span><span class="s4">1</span><span class="s1">;</span><span class="s0"> 
+                    } 
+                } 
+            } 
+        } 
+        </span><span class="s1">return </span><span class="s4">0</span><span class="s1">;</span><span class="s0"> 
+    } 
+ 
+    </span><span class="s1">int</span><span class="s0">[][] dir = </span><span class="s1">new int</span><span class="s0">[][]{{</span><span class="s4">0</span><span class="s1">,</span><span class="s4">1</span><span class="s0">}</span><span class="s1">,</span><span class="s0">{</span><span class="s4">0</span><span class="s1">,</span><span class="s0">-</span><span class="s4">1</span><span class="s0">}</span><span class="s1">,</span><span class="s0">{</span><span class="s4">1</span><span class="s1">,</span><span class="s4">0</span><span class="s0">}</span><span class="s1">,</span><span class="s0">{-</span><span class="s4">1</span><span class="s1">,</span><span class="s4">0</span><span class="s0">}</span><span class="s1">,</span><span class="s0">{</span><span class="s4">1</span><span class="s1">,</span><span class="s4">1</span><span class="s0">}</span><span class="s1">,</span><span class="s0">{-</span><span class="s4">1</span><span class="s1">,</span><span class="s4">1</span><span class="s0">}</span><span class="s1">,</span><span class="s0">{-</span><span class="s4">1</span><span class="s1">,</span><span class="s0">-</span><span class="s4">1</span><span class="s0">}</span><span class="s1">,</span><span class="s0">{</span><span class="s4">1</span><span class="s1">,</span><span class="s0">-</span><span class="s4">1</span><span class="s0">}}</span><span class="s1">;</span><span class="s0"> 
+ 
+    </span><span class="s1">boolean </span><span class="s0">reachFive(</span><span class="s1">int</span><span class="s0">[][] matrix</span><span class="s1">, int </span><span class="s0">i</span><span class="s1">, int </span><span class="s0">j) { 
+        </span><span class="s1">int </span><span class="s0">cur = matrix[i][j]</span><span class="s1">;</span><span class="s0"> 
+        </span><span class="s1">for</span><span class="s0">(</span><span class="s1">int </span><span class="s0">k = </span><span class="s4">0</span><span class="s1">; </span><span class="s0">k &lt; dir.length</span><span class="s1">; </span><span class="s0">k++) { 
+            </span><span class="s1">for</span><span class="s0">(</span><span class="s1">int </span><span class="s0">m = </span><span class="s4">1</span><span class="s1">; </span><span class="s0">m &lt; </span><span class="s4">5</span><span class="s1">; </span><span class="s0">m++) { 
+                </span><span class="s1">int </span><span class="s0">ni = i + dir[k][</span><span class="s4">0</span><span class="s0">] * m</span><span class="s1">;</span><span class="s0"> 
+                </span><span class="s1">int </span><span class="s0">nj = j + dir[k][</span><span class="s4">1</span><span class="s0">] * m</span><span class="s1">;</span><span class="s0"> 
+                </span><span class="s1">if</span><span class="s0">(ni &lt; </span><span class="s4">0 </span><span class="s0">|| nj &lt; </span><span class="s4">0 </span><span class="s0">|| ni &gt;= size || nj &gt;= size || matrix[ni][nj] != cur) { 
+                    </span><span class="s1">break;</span><span class="s0"> 
+                } 
+                </span><span class="s1">if</span><span class="s0">(m == </span><span class="s4">4</span><span class="s0">) { 
+                    </span><span class="s2">//System.out.println(&quot;got 5&quot;);</span><span class="s0"> 
+                    </span><span class="s1">for</span><span class="s0">(</span><span class="s1">int </span><span class="s0">t = </span><span class="s4">0</span><span class="s1">; </span><span class="s0">t &lt; </span><span class="s4">5</span><span class="s1">; </span><span class="s0">t++) { 
+                        ni = i + dir[k][</span><span class="s4">0</span><span class="s0">] * t</span><span class="s1">;</span><span class="s0"> 
+                        nj = j + dir[k][</span><span class="s4">1</span><span class="s0">] * t</span><span class="s1">;</span><span class="s0"> 
+                        board[ni][nj].setIcon(yellowDot)</span><span class="s1">;</span><span class="s0"> 
+                    } 
+                    </span><span class="s1">return true;</span><span class="s0"> 
+                } 
+            } 
+        } 
+        </span><span class="s1">return false;</span><span class="s0"> 
+ 
+    } 
+    </span><span class="s1">void </span><span class="s0">fillNextMove(</span><span class="s1">int</span><span class="s0">[][] matrix</span><span class="s1">, </span><span class="s0">JButton[][] c) { 
+        </span><span class="s1">int </span><span class="s0">max_pos = </span><span class="s4">0</span><span class="s1">;</span><span class="s0"> 
+        </span><span class="s1">int </span><span class="s0">max_neg = </span><span class="s4">0</span><span class="s1">;</span><span class="s0"> 
+        </span><span class="s1">int </span><span class="s0">mp_i = </span><span class="s4">0</span><span class="s1">;</span><span class="s0"> 
+        </span><span class="s1">int </span><span class="s0">mp_j = </span><span class="s4">0</span><span class="s1">;</span><span class="s0"> 
+        </span><span class="s1">int </span><span class="s0">mn_i = </span><span class="s4">0</span><span class="s1">;</span><span class="s0"> 
+        </span><span class="s1">int </span><span class="s0">mn_j = </span><span class="s4">0</span><span class="s1">;</span><span class="s0"> 
+        </span><span class="s1">for</span><span class="s0">(</span><span class="s1">int </span><span class="s0">i = </span><span class="s4">0</span><span class="s1">; </span><span class="s0">i &lt; size</span><span class="s1">; </span><span class="s0">i++) { 
+            </span><span class="s1">for</span><span class="s0">(</span><span class="s1">int </span><span class="s0">j = </span><span class="s4">0</span><span class="s1">; </span><span class="s0">j &lt; size</span><span class="s1">; </span><span class="s0">j++) { 
+                </span><span class="s1">int </span><span class="s0">x = matrix[i][j]</span><span class="s1">;</span><span class="s0"> 
+                </span><span class="s1">if</span><span class="s0">(x == </span><span class="s4">1 </span><span class="s0">|| x == -</span><span class="s4">1</span><span class="s0">) </span><span class="s1">continue;</span><span class="s0"> 
+                </span><span class="s1">int </span><span class="s0">temp1 = getScore(matrix</span><span class="s1">, </span><span class="s0">i</span><span class="s1">, </span><span class="s0">j</span><span class="s1">, </span><span class="s0">-</span><span class="s4">1</span><span class="s0">)</span><span class="s1">;</span><span class="s0"> 
+                </span><span class="s1">int </span><span class="s0">temp2 = getScore(matrix</span><span class="s1">, </span><span class="s0">i</span><span class="s1">, </span><span class="s0">j</span><span class="s1">, </span><span class="s4">1</span><span class="s0">)</span><span class="s1">;</span><span class="s0"> 
+                </span><span class="s1">if</span><span class="s0">(temp1 &gt; max_pos) { 
+                    max_pos = temp1</span><span class="s1">;</span><span class="s0"> 
+                    mp_i = i</span><span class="s1">;</span><span class="s0"> 
+                    mp_j = j</span><span class="s1">;</span><span class="s0"> 
+                } 
+                </span><span class="s1">if</span><span class="s0">(temp2 &gt; max_neg) { 
+                    max_neg = temp2</span><span class="s1">;</span><span class="s0"> 
+                    mn_i = i</span><span class="s1">;</span><span class="s0"> 
+                    mn_j = j</span><span class="s1">;</span><span class="s0"> 
+                } 
+            } 
+        } 
+        </span><span class="s1">int </span><span class="s0">fi = (max_pos &lt; max_neg) ? mn_i : mp_i</span><span class="s1">;</span><span class="s0"> 
+        </span><span class="s1">int </span><span class="s0">fj = (max_pos &lt; max_neg) ? mn_j : mp_j</span><span class="s1">;</span><span class="s0"> 
+        matrix[fi][fj] = -</span><span class="s4">1</span><span class="s1">;</span><span class="s0"> 
+        c[fi][fj].setIcon(blackDot)</span><span class="s1">;</span><span class="s0"> 
+        </span><span class="s1">if</span><span class="s0">(max_neg &gt; </span><span class="s4">500</span><span class="s0">) { 
+            status.setText(</span><span class="s3">&quot;哎呀危险&quot;</span><span class="s0">)</span><span class="s1">;</span><span class="s0"> 
+            status.setBackground(Color.YELLOW)</span><span class="s1">;</span><span class="s0"> 
+        } 
+        </span><span class="s1">else if</span><span class="s0">(max_pos &gt; </span><span class="s4">500</span><span class="s0">) { 
+            status.setText(</span><span class="s3">&quot;冲压！！！！！&quot;</span><span class="s0">)</span><span class="s1">;</span><span class="s0"> 
+            status.setBackground(Color.YELLOW)</span><span class="s1">;</span><span class="s0"> 
+        } 
+        </span><span class="s1">else </span><span class="s0">{ 
+            status.setText(</span><span class="s3">&quot;慢慢来哦，不急&quot;</span><span class="s0">)</span><span class="s1">;</span><span class="s0"> 
+            status.setBackground(Color.white)</span><span class="s1">;</span><span class="s0"> 
+        } 
+        </span><span class="s2">//System.out.println(&quot;successfully here&quot;);</span><span class="s0"> 
+    } 
+    </span><span class="s1">int</span><span class="s0">[][] dir4 = </span><span class="s1">new int</span><span class="s0">[][]{{</span><span class="s4">1</span><span class="s1">,</span><span class="s4">0</span><span class="s0">}</span><span class="s1">,</span><span class="s0">{</span><span class="s4">0</span><span class="s1">,</span><span class="s4">1</span><span class="s0">}</span><span class="s1">,</span><span class="s0">{</span><span class="s4">1</span><span class="s1">,</span><span class="s4">1</span><span class="s0">}</span><span class="s1">,</span><span class="s0">{-</span><span class="s4">1</span><span class="s1">,</span><span class="s4">1</span><span class="s0">}}</span><span class="s1">;</span><span class="s0"> 
+    </span><span class="s1">int </span><span class="s0">getScore(</span><span class="s1">int</span><span class="s0">[][] m</span><span class="s1">, int </span><span class="s0">si</span><span class="s1">, int </span><span class="s0">sj</span><span class="s1">, int </span><span class="s0">type) { 
+        </span><span class="s1">int </span><span class="s0">score = </span><span class="s4">0</span><span class="s1">;</span><span class="s0"> 
+        </span><span class="s1">for</span><span class="s0">(</span><span class="s1">int </span><span class="s0">k = </span><span class="s4">0</span><span class="s1">; </span><span class="s0">k &lt; </span><span class="s4">4</span><span class="s1">; </span><span class="s0">k++) { 
+            </span><span class="s1">int </span><span class="s0">lineScore = </span><span class="s4">1</span><span class="s1">;</span><span class="s0"> 
+            </span><span class="s1">for</span><span class="s0">(</span><span class="s1">int </span><span class="s0">i = </span><span class="s4">0</span><span class="s1">; </span><span class="s0">i &lt; </span><span class="s4">5</span><span class="s1">; </span><span class="s0">i++) { 
+                </span><span class="s1">int </span><span class="s0">ni = si + dir4[k][</span><span class="s4">0</span><span class="s0">] * (i - </span><span class="s4">4</span><span class="s0">)</span><span class="s1">;</span><span class="s0"> 
+                </span><span class="s1">int </span><span class="s0">nj = sj + dir4[k][</span><span class="s4">1</span><span class="s0">] * (i - </span><span class="s4">4</span><span class="s0">)</span><span class="s1">;</span><span class="s0"> 
+                </span><span class="s1">int </span><span class="s0">tempScore = </span><span class="s4">0</span><span class="s1">;</span><span class="s0"> 
+                </span><span class="s1">for</span><span class="s0">(</span><span class="s1">int </span><span class="s0">j = </span><span class="s4">0</span><span class="s1">; </span><span class="s0">j &lt; </span><span class="s4">5</span><span class="s1">; </span><span class="s0">j++) { 
+                    </span><span class="s1">int </span><span class="s0">nni = ni + dir4[k][</span><span class="s4">0</span><span class="s0">] * j</span><span class="s1">;</span><span class="s0"> 
+                    </span><span class="s1">int </span><span class="s0">nnj = nj + dir4[k][</span><span class="s4">1</span><span class="s0">] * j</span><span class="s1">;</span><span class="s0"> 
+                    </span><span class="s1">if</span><span class="s0">(nni == si &amp;&amp; nnj == sj) </span><span class="s1">continue;</span><span class="s0"> 
+                    </span><span class="s1">if</span><span class="s0">(nni &lt; </span><span class="s4">0 </span><span class="s0">|| nnj &lt; </span><span class="s4">0 </span><span class="s0">|| nni &gt;= size || nnj &gt;= size || m[nni][nnj] == -type) { 
+                        tempScore = </span><span class="s4">0</span><span class="s1">;</span><span class="s0"> 
+                        </span><span class="s1">break;</span><span class="s0"> 
+                    } 
+                    </span><span class="s1">if</span><span class="s0">(m[nni][nnj] == type) tempScore++</span><span class="s1">;</span><span class="s0"> 
+ 
+                } 
+                </span><span class="s2">//most important part</span><span class="s0"> 
+                </span><span class="s1">switch</span><span class="s0">(tempScore) { 
+                    </span><span class="s1">case </span><span class="s4">0</span><span class="s0">: 
+                        lineScore += </span><span class="s4">0</span><span class="s1">;</span><span class="s0"> 
+                        </span><span class="s1">break;</span><span class="s0"> 
+                    </span><span class="s1">case </span><span class="s4">1</span><span class="s0">: 
+                        lineScore += </span><span class="s4">2</span><span class="s1">;</span><span class="s0"> 
+                        </span><span class="s1">break;</span><span class="s0"> 
+                    </span><span class="s1">case </span><span class="s4">2</span><span class="s0">: 
+                        lineScore += </span><span class="s4">5</span><span class="s1">;</span><span class="s0"> 
+                        </span><span class="s1">break;</span><span class="s0"> 
+                    </span><span class="s1">case </span><span class="s4">3</span><span class="s0">: 
+                        lineScore += </span><span class="s4">100</span><span class="s1">;</span><span class="s0"> 
+                        </span><span class="s1">break;</span><span class="s0"> 
+                    </span><span class="s1">case </span><span class="s4">4</span><span class="s0">: 
+                        lineScore += </span><span class="s4">5000</span><span class="s1">;</span><span class="s0"> 
+                        </span><span class="s1">break;</span><span class="s0"> 
+                    </span><span class="s1">default</span><span class="s0">: 
+                        </span><span class="s1">break;</span><span class="s0"> 
+                } 
+            } 
+            score += lineScore</span><span class="s1">;</span><span class="s0"> 
+        } 
+        </span><span class="s1">return </span><span class="s0">score</span><span class="s1">;</span><span class="s0"> 
+    } 
+ 
+} 
+</span><span class="s2">//class DrawRect extends JPanel {</span><span class="s0"> 
+</span><span class="s2">//    DrawRect() {</span><span class="s0"> 
+</span><span class="s2">//        super();</span><span class="s0"> 
+</span><span class="s2">//    }</span><span class="s0"> 
+</span><span class="s2">//    @Override</span><span class="s0"> 
+</span><span class="s2">//    public void paint(Graphics g) {</span><span class="s0"> 
+</span><span class="s2">//        super.paintComponent(g);</span><span class="s0"> 
+</span><span class="s2">//        for(int i = 0; i &lt;= 10; i++) {</span><span class="s0"> 
+</span><span class="s2">//            for(int j = 0; j &lt;= 10; j++) {</span><span class="s0"> 
+</span><span class="s2">//                g.setColor(Color.BLACK);</span><span class="s0"> 
+</span><span class="s2">//                g.drawRect(150 + i * 50, 100 + j * 50, 50, 50);</span><span class="s0"> 
+</span><span class="s2">//            }</span><span class="s0"> 
+</span><span class="s2">//        }</span><span class="s0"> 
+</span><span class="s2">//    }</span><span class="s0"> 
+</span><span class="s2">//}</span><span class="s0"> 
+</span></pre>
+</body>
+</html>
